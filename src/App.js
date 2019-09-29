@@ -6,7 +6,7 @@ import Signin from './components/signin.component.js'
 class App extends Component {
   navbar = (
     <nav className="navbar navbar-light navbar-expand-lg justify-content-between py-0">
-      <NavLink class="navbar-brand" to='/'><h1>stock</h1></NavLink>
+      <NavLink className="navbar-brand" to='/'><h1>stock</h1></NavLink>
       <div>
         <Link to="/"><div className="btn btn-outline light">sign in</div></Link>
         <Link to="/register">
@@ -16,11 +16,6 @@ class App extends Component {
     </nav>
   );
 
-  landing = (
-    <div className="container">
-
-    </div>
-  );
   render() {
     return (
       <Router>

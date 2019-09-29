@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "stock-254318": {
+      "hosting": {
+        "main": [
+          "stock-ajilk"
+        ]
+      }
+    }
+  }
+}
