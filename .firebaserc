@@ -1,4 +1,7 @@
 {
+  "projects": {
+     "default": "stock-254318"
+  },
   "targets": {
     "stock-254318": {
       "hosting": {

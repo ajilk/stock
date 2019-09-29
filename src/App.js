@@ -1,29 +1,20 @@
+import './Firebase' // Initialize Firebase
 import React, { Component } from 'react';
-import { BrowserRouter as Router, NavLink, Route, Link } from 'react-router-dom'
-import Register from './components/register.component.js'
-import Signin from './components/signin.component.js'
+import { BrowserRouter as Router, NavLink, Route, Link, Redirect } from 'react-router-dom'
+import RegisterPage from './pages/RegisterPage'
+import SigninPage from './pages/SigninPage'
+import DashboardPage from './pages/DashboardPage'
+import firebase from 'firebase/app'
+import 'firebase/auth'
 
 class App extends Component {
-  navbar = (
-    <nav className="navbar navbar-light navbar-expand-lg justify-content-between py-0">
-      <NavLink className="navbar-brand" to='/'><h1>stock</h1></NavLink>
-      <div>
-        <Link to="/"><div className="btn btn-outline light">sign in</div></Link>
-        <Link to="/register">
-          <div className="btn btn-outline-secondary">sign up</div>
-        </Link>
-      </div>
-    </nav>
-  );
-
   render() {
+    if (firebase.auth().currentUser) return <Redirect to='/' />
     return (
       <Router>
-        {this.navbar}
-        <div className="container my-5 py-5">
-          <Route path='/' exact component={Signin} />
-          <Route path='/register' component={Register} />
-        </div>
+        <Route path='/' exact component={SigninPage} />
+        <Route path='/register' component={RegisterPage} />
+        <Route path='/dashboard' component={DashboardPage} />
       </Router>
     );
   }

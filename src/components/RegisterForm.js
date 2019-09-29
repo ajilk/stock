@@ -1,29 +1,34 @@
 import React, { Component } from 'react'
-import app from '../Firebase'
-// import 'firebase/auth'
-// import axios from 'axios'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import { Redirect } from 'react-router-dom'
 
-// const SERVER = 'https://us-central1-stock-254318.cloudfunctions.net'
-export default class Register extends Component {
+
+export default class RegisterForm extends Component {
   state = {
     email: '',
     password: '',
     verifyPassword: ''
   }
 
-  onEmailChange = (e) => this.setState({ 'email': e.target.value });
-  onPasswordChange = (e) => this.setState({ 'password': e.target.value })
-  onVerifyPasswordChange = (e) => this.setState({ 'verifyPassword': e.target.value })
+  onEmailChange = (e) => this.setState({ email: e.target.value });
+  onPasswordChange = (e) => this.setState({ password: e.target.value })
+  onVerifyPasswordChange = (e) => this.setState({ verifyPassword: e.target.value })
 
-  register = (e) => {
-    app.auth().createUserWithEmailAndPassword(
-      this.state.email, this.state.password
-    ).catch(error => {
-      console.log(`${error.code}: ${error.message}`)
-    })
+  register = () => {
+    firebase.auth().createUserWithEmailAndPassword(
+      this.state.email, this.state.password)
+      .then(() => {
+        console.log('why?')
+        this.props.onRegistered()
+      })
+      .catch(error => {
+        console.log(`${error.code}: ${error.message}`)
+      });
   }
 
   render() {
+    if (firebase.auth().currentUser) { return <Redirect to='/dashboard' /> }
     return (
       <div className="container p-5 text-center" >
         <h2>hello</h2>
