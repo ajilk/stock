@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import firebase from 'firebase/app'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Redirect } from 'react-router-dom'
 import Dashboard from '../components/Dashboard'
 
 class DashboardPage extends Component {
@@ -10,7 +10,7 @@ class DashboardPage extends Component {
   }
 
   render() {
-    if (!firebase.auth().currentUser) this.props.history.push('/')
+    if (!firebase.auth().currentUser) return <Redirect to='/' />
     return (
       <div>
         <nav className="navbar navbar-light navbar-expand-lg justify-content-between py-0">

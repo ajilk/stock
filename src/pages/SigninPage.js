@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import firebase from 'firebase/app'
+import 'firebase/auth'
 import { NavLink, Link } from 'react-router-dom'
 import SigninForm from '../components/SigninForm'
 
 class SigninPage extends Component {
-  onSignedIn = () => {
-    console.log('hello')
-    this.props.history.replace('/dashboard')
+  onSignedIn = () => this.props.history.replace('/dashboard')
+
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) this.props.history.replace('/dashboard')
+    });
   }
 
   render() {
-    if(firebase.auth().currentUser) this.props.history.replace('/dashboard')
     return (
       <div>
         <nav className="navbar navbar-light navbar-expand-lg justify-content-between py-0">
@@ -21,7 +24,7 @@ class SigninPage extends Component {
           </div>
         </nav>
         <div className="container my-5 py-5">
-          <SigninForm onSignedIn={this.onSignedIn}/>
+          <SigninForm onSignedIn={this.onSignedIn} />
         </div>
       </div >
     );
