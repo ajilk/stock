@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import firebase from 'firebase/app'
+import 'firebase/firestore'
+
 
 class Dashboard extends Component {
   render() {
     return (
-      <div>
-        <h1 class="text-center">Dashboard</h1>
+      <>
+        <h2>dashboard</h2>
         <h5>{JSON.stringify(firebase.auth().currentUser.uid)}</h5>
-      </div>
+      </>
     );
   }
 }
