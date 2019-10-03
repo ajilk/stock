@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import firebase from 'firebase/app'
-import { BrowserRouter as Router, Route, NavLink, Redirect, Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import Dashboard from '../components/Dashboard'
 import Transactions from '../components/Transactions'
-import Buy from '../components/Buy'
+import BuyForm from '../components/BuyForm'
 
 class DashboardPage extends Component {
   state = {
@@ -22,13 +22,13 @@ class DashboardPage extends Component {
     switch (this.state.currentTab) {
       case 'dashboard': currentTab = <Dashboard />; break
       case 'transactions': currentTab = <Transactions />; break
-      case 'buy': currentTab = <Buy />; break
+      case 'buy': currentTab = <BuyForm />; break
       default: currentTab = <Dashboard />
     }
     return (
       <div>
         <nav className="navbar navbar-light navbar-expand-lg justify-content-between py-0">
-          <NavLink className="navbar-brand" to='/'><h1>stock</h1></NavLink>
+          <Link className="navbar-brand" to='/'><h1 className="my-0 align-center">stock</h1></Link>
           <div className="btn-group" role="group">
             <div className="btn-group" role="group">
               <button className="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" type="button">{this.state.currentTab}</button>

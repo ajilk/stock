@@ -4,11 +4,29 @@ import 'firebase/firestore'
 
 
 class Dashboard extends Component {
+  state = {
+    ownedStocks: []
+  }
+
+  componentDidMount() {
+    this.getOwnedStocks().then(ownedStocks =>
+      this.setState({ ownedStocks: ownedStocks })
+    )
+  }
+
+  async getOwnedStocks() {
+    let db = firebase.firestore()
+    const stocksCollectionSnapshot = await db.collection("users").doc(firebase.auth().currentUser.uid).collection("ownedStocks").get()
+    var ownedStocks = []
+    stocksCollectionSnapshot.forEach(doc => ownedStocks.push(doc.data()))
+    return ownedStocks;
+  }
+
   render() {
     return (
       <>
         <h2>dashboard</h2>
-        <h5>{JSON.stringify(firebase.auth().currentUser.uid)}</h5>
+        {this.state.ownedStocks.map(stock => <h5>{stock.name} - {stock.quantity}</h5>)}
       </>
     );
   }

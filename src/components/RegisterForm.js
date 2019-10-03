@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import { Redirect } from 'react-router-dom'
+import User from '../models/User.js'
 
 
 export default class RegisterForm extends Component {
@@ -19,12 +20,12 @@ export default class RegisterForm extends Component {
     firebase.auth().createUserWithEmailAndPassword(
       this.state.email, this.state.password)
       .then(() => {
-        console.log('why?')
+        var newUser = new User(5000);
+        const db = firebase.firestore()
+        const uid = firebase.auth().currentUser.uid
+        db.collection("users").doc(uid).set(Object.assign({}, newUser))
         this.props.onRegistered()
-      })
-      .catch(error => {
-        console.log(`${error.code}: ${error.message}`)
-      });
+      }).catch(error => console.log(`${error.code}: ${error.message}`));
   }
 
   render() {
