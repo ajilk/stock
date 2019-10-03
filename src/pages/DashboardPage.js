@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import firebase from 'firebase/app'
 import { Redirect, Link } from 'react-router-dom'
 import Dashboard from '../components/Dashboard'
-import Transactions from '../components/Transactions'
+import Transactions from './Transactions'
 import BuyForm from '../components/BuyForm'
 
 class DashboardPage extends Component {
   state = {
-    currentTab: 'dashboard'
+    currentTab: 'transactions'
   }
   signOut = () => {
     firebase.auth().signOut()

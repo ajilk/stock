@@ -13,11 +13,11 @@ class BuyForm extends Component {
   onQuantityChange = (e) => this.setState({ quantity: e.target.value })
 
   onBuy = () => {
-    const sharePrice = 100
+    const sharePrice = 10.3
     const { stockName, quantity } = this.state
     const db = firebase.firestore();
     const uid = firebase.auth().currentUser.uid
-    const transaction = new Transaction(uid, stockName, quantity, -1 * quantity * sharePrice)
+    const transaction = new Transaction(uid, stockName, quantity, -1 * sharePrice)
     const stock = new Stock(stockName, quantity)
     const userReference = db.collection("users").doc(uid)
 

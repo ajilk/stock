@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Transaction from '../components/Transaction'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -24,24 +25,10 @@ class Transactions extends Component {
     return (
       <div>
         <h2>transactions</h2>
-        <table className="container">
-          <tr>
-            <th>time</th>
-            <th>ticker name</th>
-            <th>quantity</th>
-            <th>amount</th>
-          </tr>
-          {this.state.transactions.map(transaction => {
-            return (
-              <tr>
-                <td>{transaction.time}</td>
-                <td>{transaction.name}</td>
-                <td>{transaction.quantity}</td>
-                <td>{transaction.amount}</td>
-              </tr>
-            );
-          })}
-        </table>
+        <div className="container w-75"> {this.state.transactions.sort((a, b) => (a.time < b.time) ? 1 : -1).map(t => {
+          return <Transaction time={t.time} name={t.name} quantity={t.quantity} amount={t.amount} />
+        })}
+        </div>
       </div>
     );
   }
