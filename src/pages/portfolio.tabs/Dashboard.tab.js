@@ -25,7 +25,8 @@ class DashboardTab extends Component {
     return (
       <>
         <h2>dashboard</h2>
-        {this.state.ownedStocks.map(stock => <h5>{stock.name} - {stock.quantity}</h5>)}
+        {this.state.ownedStocks.length > 0 ? this.state.ownedStocks.map(stock => <h5>{stock.name} - {stock.quantity}</h5>) : <h5>come back here after investing</h5>
+        }
       </>
     );
   }

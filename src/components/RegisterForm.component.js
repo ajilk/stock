@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import { Redirect } from 'react-router-dom'
@@ -24,7 +24,7 @@ export default class RegisterForm extends Component {
     firebase.auth().createUserWithEmailAndPassword(
       email, password)
       .then(() => {
-        var newUser = new UserModel(firstName, lastName, 5000);
+        const newUser = new UserModel(firstName, lastName, 5000);
         const db = firebase.firestore()
         const uid = firebase.auth().currentUser.uid
         db.collection("users").doc(uid).set(Object.assign({}, newUser))

@@ -9,12 +9,18 @@ class BuyForm extends Component {
     quantity: ''
   }
 
-  onTickerChange = (e) => this.setState({ stockName: e.target.value })
+  onStockNameChange = (e) => this.setState({ stockName: e.target.value })
   onQuantityChange = (e) => this.setState({ quantity: e.target.value })
 
+  inputNotValid = () => {
+    // Validate stockName & quanity more rigorously
+    if (!this.state.quantity || !this.state.stockName) return false
+  }
+
   onBuy = () => {
-    const sharePrice = 10.3
+    if (this.inputNotValid()) return
     const { stockName, quantity } = this.state
+    const sharePrice = 10.3
     const db = firebase.firestore();
     const uid = firebase.auth().currentUser.uid
     const transaction = new TransactionModel(uid, stockName, quantity, -1 * sharePrice)
@@ -46,7 +52,7 @@ class BuyForm extends Component {
         <div className="row justify-content-center">
           <div className="col-lg-4 col-12">
             <div className="form-group">
-              <input value={this.state.stockName} type="text" className="form-control" id="tickerInput" aria-describedby="tickerHelp" placeholder="e.g. AAPL, GOOGL" onChange={this.onTickerChange} />
+              <input value={this.state.stockName} type="text" className="form-control" id="tickerInput" aria-describedby="tickerHelp" placeholder="e.g. AAPL, GOOGL" onChange={this.onStockNameChange} />
             </div>
             <div className="form-group">
               <input value={this.state.quantity} type="number" className="form-control" id="quantityInput" placeholder="e.g. 10" onChange={this.onQuantityChange} />
