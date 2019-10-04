@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import firebase from 'firebase/app'
 import { NavLink, Link } from 'react-router-dom'
-import RegisterForm from '../components/RegisterForm'
+import RegisterForm from '../components/RegisterForm.component'
 
 class RegisterPage extends Component {
-  onRegistered = () => this.props.history.replace('/dashboard')
+  onRegistered = () => this.props.history.replace('/portfolio')
 
   render() {
-    if (firebase.auth().currentUser) this.props.history.replace('/dashboard')
+    if (firebase.auth().currentUser) this.props.history.replace('/portfolio')
     return (
       <div>
         <nav className="navbar navbar-light navbar-expand-lg justify-content-between py-0">

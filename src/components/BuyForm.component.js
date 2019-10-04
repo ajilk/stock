@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Transaction from '../models/Transaction'
+import TransactionModel from '../models/Transaction.model'
 import firebase from 'firebase/app'
-import Stock from '../models/Stock'
+import StockModel from '../models/Stock.model'
 
 class BuyForm extends Component {
   state = {
@@ -17,8 +17,8 @@ class BuyForm extends Component {
     const { stockName, quantity } = this.state
     const db = firebase.firestore();
     const uid = firebase.auth().currentUser.uid
-    const transaction = new Transaction(uid, stockName, quantity, -1 * sharePrice)
-    const stock = new Stock(stockName, quantity)
+    const transaction = new TransactionModel(uid, stockName, quantity, -1 * sharePrice)
+    const stock = new StockModel(stockName, quantity)
     const userReference = db.collection("users").doc(uid)
 
     // Update balance

@@ -1,9 +1,9 @@
 import './Firebase' // Initialize Firebase
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import RegisterPage from './pages/RegisterPage'
-import SigninPage from './pages/SigninPage'
-import DashboardPage from './pages/DashboardPage'
+import RegisterPage from './pages/Register.page'
+import SigninPage from './pages/Signin.page'
+import PortfolioPage from './pages/Portfolio.page'
 
 class App extends Component {
   render() {
@@ -11,7 +11,7 @@ class App extends Component {
       <Router>
         <Route exact path='/' component={SigninPage} />
         <Route path='/register' component={RegisterPage} />
-        <Route path='/dashboard' component={DashboardPage} />
+        <Route path='/portfolio' component={PortfolioPage} />
       </Router>
     );
   }

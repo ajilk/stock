@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-
-class Dashboard extends Component {
+class DashboardTab extends Component {
   state = {
     ownedStocks: []
   }
@@ -32,4 +31,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard
+export default DashboardTab

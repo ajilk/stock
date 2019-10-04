@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import firebase from 'firebase/app'
 import { Redirect, Link } from 'react-router-dom'
-import Dashboard from '../components/Dashboard'
-import Transactions from './Transactions'
-import BuyForm from '../components/BuyForm'
+import DashboardTab from './portfolio.tabs/Dashboard.tab'
+import TransactionsTab from './portfolio.tabs/Transactions.tab'
+import BuyTab from './portfolio.tabs/Buy.tab'
 
-class DashboardPage extends Component {
+class PortfolioPage extends Component {
   state = {
-    currentTab: 'transactions'
+    currentTab: 'dashboard'
   }
   signOut = () => {
     firebase.auth().signOut()
@@ -18,12 +18,12 @@ class DashboardPage extends Component {
 
   render() {
     if (!firebase.auth().currentUser) return <Redirect to='/' />
-    let currentTab = <Dashboard />
+    let currentTab
     switch (this.state.currentTab) {
-      case 'dashboard': currentTab = <Dashboard />; break
-      case 'transactions': currentTab = <Transactions />; break
-      case 'buy': currentTab = <BuyForm />; break
-      default: currentTab = <Dashboard />
+      case 'dashboard': currentTab = <DashboardTab />; break
+      case 'transactions': currentTab = <TransactionsTab />; break
+      case 'buy': currentTab = <BuyTab />; break
+      default: currentTab = <DashboardTab />
     }
     return (
       <div>
@@ -33,9 +33,9 @@ class DashboardPage extends Component {
             <div className="btn-group" role="group">
               <button className="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" type="button">{this.state.currentTab}</button>
               <div className="dropdown-menu">
-                <a id="dashboard" href="#" className="dropdown-item" onClick={this.setTab}>dashboard</a>
-                <a id="transactions" href="#" className="dropdown-item" onClick={this.setTab}>transactions</a>
-                <a id="buy" href="#" className="dropdown-item" onClick={this.setTab}>buy</a>
+                <a id="dashboard" href="#dashboard" className="dropdown-item" onClick={this.setTab}>dashboard</a>
+                <a id="transactions" href="#transactions" className="dropdown-item" onClick={this.setTab}>transactions</a>
+                <a id="buy" href="#buy" className="dropdown-item" onClick={this.setTab}>buy</a>
               </div>
             </div>
             <button type="submit" className="btn btn-outline-dark" onClick={this.signOut}>sign out</button>
@@ -47,4 +47,4 @@ class DashboardPage extends Component {
   }
 }
 
-export default DashboardPage
+export default PortfolioPage

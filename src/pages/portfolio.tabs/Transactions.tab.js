@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Transaction from '../components/Transaction'
+import Transaction from '../../components/Transaction.component'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-class Transactions extends Component {
+class TransactionsTab extends Component {
   state = {
     transactions: []
   }
@@ -34,4 +34,4 @@ class Transactions extends Component {
   }
 }
 
-export default Transactions
+export default TransactionsTab

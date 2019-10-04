@@ -1,4 +1,4 @@
-export default class Transaction {
+export default class TransactionModel {
   constructor(uid, name, quantity, amount) {
     this.time = Date.now()
     this.uid = uid

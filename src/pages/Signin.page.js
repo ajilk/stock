@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import { Link, Redirect } from 'react-router-dom'
-import SigninForm from '../components/SigninForm'
+import SigninForm from '../components/SigninForm.component'
 
 class SigninPage extends Component {
-  onSignedIn = () => this.props.history.replace('/dashboard')
+  onSignedIn = () => this.props.history.replace('/portfolio')
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) this.props.history.replace('/dashboard')
+      if (user) this.props.history.replace('/portfolio')
     });
   }
 
