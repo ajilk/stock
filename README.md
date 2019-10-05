@@ -1,5 +1,9 @@
 # stock
 
+### Guest Login
+E: `debug@gmail.com`  
+P: `_debug`  
+
 ## User Stories
 1. As a user, I want to create a new account with my name, email, and password so that I can buy and trade stocks.
    - Default the user’s cash account balance to \$5000.00 USD.
