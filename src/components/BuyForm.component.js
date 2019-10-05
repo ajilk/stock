@@ -14,7 +14,8 @@ class BuyForm extends Component {
 
   inputNotValid = () => {
     // Validate stockName & quanity more rigorously
-    if (!this.state.quantity || !this.state.stockName) return false
+    if (!this.state.quantity || !this.state.stockName) return true
+    return false
   }
 
   onBuy = () => {
@@ -41,8 +42,6 @@ class BuyForm extends Component {
         this.setState({ stockName: '', quantity: '' })
       })
     })
-
-    console.log(`bought ${this.state.quantity} shares of ${this.state.stock}`)
   }
 
   render() {
