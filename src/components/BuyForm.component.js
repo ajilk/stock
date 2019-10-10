@@ -2,18 +2,28 @@ import React, { Component } from 'react'
 import TransactionModel from '../models/Transaction.model'
 import firebase from 'firebase/app'
 import StockModel from '../models/Stock.model'
+import key from '../alphaVantageConfig'
 
 class BuyForm extends Component {
   state = {
     stockName: '',
-    quantity: ''
+    quantity: '',
+    searchResults: {}
   }
 
-  onStockNameChange = (e) => this.setState({ stockName: e.target.value })
+  onStockNameChange = async (e) => {
+    this.setState({ stockName: e.target.value })
+    const { stockName } = this.state
+    const API_URL = `https://www.alphavantage.co/query?function=`
+    await fetch(API_URL + 'SYMBOL_SEARCH&keywords=' + stockName + '&apikey=' + key).then((res) => {
+      res.json().then(response => this.setState({ searchResults: response }))
+    }).catch(err => console.log(err))
+    console.log(this.state.searchResults)
+  }
   onQuantityChange = (e) => this.setState({ quantity: e.target.value })
 
   inputNotValid = () => {
-    // Validate stockName & quanity more rigorously
+    // TODO: Validate stockName & quanity more rigorously
     if (!this.state.quantity || !this.state.stockName) return true
     return false
   }
@@ -58,7 +68,11 @@ class BuyForm extends Component {
             </div>
             <button type="submit" className="btn btn-block btn-outline-secondary" onClick={this.onBuy}>buy</button>
           </div>
+          <div className="col-lg-4 col-12">
+            {/* {this.state.searchResults} */}
+          </div>
         </div>
+
       </>
     )
   }
