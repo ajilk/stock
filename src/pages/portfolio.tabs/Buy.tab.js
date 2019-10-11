@@ -5,6 +5,8 @@ import StockModel from '../../models/Stock.model'
 import TransactionModel from '../../models/Transaction.model'
 import key from '../../alphaVantageConfig'
 
+const API_URL = 'https://www.alphavantage.co/query?function='
+const API_KEY = '&apikey=' + key
 export default class BuyTab extends Component {
   state = {
     stockName: '',
@@ -15,8 +17,7 @@ export default class BuyTab extends Component {
   onStockNameChange = async (e) => {
     this.setState({ stockName: e.target.value })
     const { stockName } = this.state
-    const API_URL = `https://www.alphavantage.co/query?function=`
-    await fetch(API_URL + 'SYMBOL_SEARCH&keywords=' + stockName + '&apikey=' + key)
+    await fetch(API_URL + 'SYMBOL_SEARCH&keywords=' + stockName + API_KEY)
       .then(result => result.json())
       .then(
         result => this.setState({ searchResults: result['bestMatches'] }),
@@ -35,27 +36,32 @@ export default class BuyTab extends Component {
   onBuy = () => {
     if (this.inputNotValid()) return
     const { stockName, quantity } = this.state
-    const sharePrice = 10.3
-    const db = firebase.firestore();
-    const uid = firebase.auth().currentUser.uid
-    const transaction = new TransactionModel(uid, stockName, quantity, -1 * sharePrice)
-    const stock = new StockModel(stockName, quantity)
-    const userReference = db.collection("users").doc(uid)
+    fetch(API_URL + 'GLOBAL_QUOTE&symbol=' + stockName + API_KEY)
+      .then(result => result.json())
+      .then(result => {
+        console.log(result)
+        const price = result['Global Quote']['05. price']
+        const db = firebase.firestore();
+        const uid = firebase.auth().currentUser.uid
+        const transaction = new TransactionModel(uid, stockName, quantity, -1 * price)
+        const stock = new StockModel(stockName, quantity)
+        const userReference = db.collection("users").doc(uid)
 
-    // Update balance
-    userReference.get().then((userSnapshot) => {
-      const priorBalance = userSnapshot.get('balance')
-      userReference.set({ 'balance': parseInt(priorBalance) + parseInt(transaction.amount) })
-    })
+        // Update balance
+        userReference.get().then((userSnapshot) => {
+          const priorBalance = userSnapshot.get('balance')
+          userReference.set({ 'balance': parseInt(priorBalance) + parseInt(transaction.amount) })
+        })
 
-    // Record transaction
-    db.collection("transactions").add(Object.assign({}, transaction)).then((transactionReference) => {
-      // Update owned stocks (setting stock details by id)
-      // WRONG: ownedStocks should be by their ticker name (it's a set) will solve duplication
-      userReference.collection('ownedStocks').doc(transactionReference.id).set(Object.assign({}, stock)).then(() => {
-        this.setState({ stockName: '', quantity: '' })
+        // Record transaction
+        db.collection("transactions").add(Object.assign({}, transaction)).then((transactionReference) => {
+          // Update owned stocks (setting stock details by id)
+          // WRONG: ownedStocks should be by their ticker name (it's a set) will solve duplication
+          userReference.collection('ownedStocks').doc(transactionReference.id).set(Object.assign({}, stock)).then(() => {
+            this.setState({ stockName: '', quantity: '' })
+          })
+        })
       })
-    })
   }
 
   onResultClick = symbol => this.setState({ stockName: symbol, searchResults: [] })
