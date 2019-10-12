@@ -26,5 +26,4 @@ yarn-error.log*
 .firebase
 
 # config
-src/firebaseConfig.js
-src/alphaVantageConfig.js
+src/config
