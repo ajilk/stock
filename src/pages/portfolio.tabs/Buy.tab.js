@@ -14,10 +14,12 @@ export default class BuyTab extends Component {
     searchResults: []
   }
 
-  onStockNameChange = async (e) => {
-    this.setState({ stockName: e.target.value })
-    const { stockName } = this.state
-    await fetch(API_URL + 'SYMBOL_SEARCH&keywords=' + stockName + API_KEY)
+  onStockNameChange = (e) => {
+    this.setState({ stockName: e.target.value }, this.fetchResults)
+  }
+
+  fetchResults = () => {
+    fetch(API_URL + 'SYMBOL_SEARCH&keywords=' + this.state.stockName + API_KEY)
       .then(result => result.json())
       .then(
         result => this.setState({ searchResults: result['bestMatches'] }),
@@ -39,7 +41,6 @@ export default class BuyTab extends Component {
     fetch(API_URL + 'GLOBAL_QUOTE&symbol=' + stockName + API_KEY)
       .then(result => result.json())
       .then(result => {
-        console.log(result)
         const price = result['Global Quote']['05. price']
         const db = firebase.firestore();
         const uid = firebase.auth().currentUser.uid
@@ -86,7 +87,7 @@ export default class BuyTab extends Component {
     return (
       <>
         {BuyForm}
-        <div className="container w-50 p-5">
+        <div className="col-10 mx-auto">
           <h5>results</h5>
           <hr />
           {
