@@ -9,6 +9,7 @@ class PortfolioPage extends Component {
   state = {
     currentTab: 'dashboard'
   }
+
   signOut = () => {
     firebase.auth().signOut()
       .then(() => this.props.history.replace('/'))

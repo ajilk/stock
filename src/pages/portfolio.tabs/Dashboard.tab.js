@@ -40,7 +40,7 @@ class DashboardTab extends Component {
             <h2>Hello {firstName} {lastName} </h2>
           </div>
           <div className="col text-right">
-            <h4><b>balance:</b> ${balance}</h4>
+            <h4><b>balance:</b> ${parseFloat(balance).toFixed(3)}</h4>
           </div>
         </div>
         <hr />

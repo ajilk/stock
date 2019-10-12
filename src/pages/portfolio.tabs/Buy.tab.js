@@ -3,10 +3,11 @@ import firebase from 'firebase/app'
 import Result from '../../components/Result.component'
 import StockModel from '../../models/Stock.model'
 import TransactionModel from '../../models/Transaction.model'
-import key from '../../alphaVantageConfig'
+import key from '../../config/alphaVantageConfig'
 
 const API_URL = 'https://www.alphavantage.co/query?function='
 const API_KEY = '&apikey=' + key
+
 export default class BuyTab extends Component {
   state = {
     stockName: '',
@@ -14,9 +15,7 @@ export default class BuyTab extends Component {
     searchResults: []
   }
 
-  onStockNameChange = (e) => {
-    this.setState({ stockName: e.target.value }, this.fetchResults)
-  }
+  onStockNameChange = e => this.setState({ stockName: e.target.value }, this.fetchResults)
 
   fetchResults = () => {
     fetch(API_URL + 'SYMBOL_SEARCH&keywords=' + this.state.stockName + API_KEY)
@@ -52,7 +51,7 @@ export default class BuyTab extends Component {
           // Update balance
           userReference.get().then((userSnapshot) => {
             const priorBalance = userSnapshot.get('balance')
-            userReference.set({ 'balance': parseFloat(priorBalance) + parseFloat(transaction.amount) })
+            userReference.update({ 'balance': parseFloat(priorBalance) + parseFloat(transaction.amount) })
           })
 
           // Record transaction

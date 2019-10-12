@@ -21,7 +21,7 @@ function Transaction(props) {
         <p className="m-0">{amount < 0 ? "BOUGHT" : "SOLD"}</p>
       </div>
       <div className="col text-right">
-        <p className="my-auto"> {quantity} shares @ {amount < 0 ? -1 * amount : amount}</p>
+        <p className="my-auto"> {quantity} {amount > 1 ? 'shares' : 'share'} @ {amount < 0 ? -1 * amount : amount}</p>
       </div>
     </ div>
   )
