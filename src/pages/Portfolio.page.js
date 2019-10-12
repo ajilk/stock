@@ -7,7 +7,7 @@ import BuyTab from './portfolio.tabs/Buy.tab'
 
 class PortfolioPage extends Component {
   state = {
-    currentTab: 'buy'
+    currentTab: 'dashboard'
   }
   signOut = () => {
     firebase.auth().signOut()

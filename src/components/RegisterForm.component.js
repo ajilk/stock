@@ -24,7 +24,7 @@ export default class RegisterForm extends Component {
     firebase.auth().createUserWithEmailAndPassword(
       email, password)
       .then(() => {
-        const newUser = new UserModel(firstName, lastName, 5000);
+        const newUser = new UserModel(firstName, lastName, 5000.0);
         const db = firebase.firestore()
         const uid = firebase.auth().currentUser.uid
         db.collection("users").doc(uid).set(Object.assign({}, newUser))

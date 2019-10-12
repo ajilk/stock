@@ -4,6 +4,7 @@ import 'firebase/firestore'
 
 class DashboardTab extends Component {
   state = {
+    userBalance: 0.0,
     ownedStocks: []
   }
 
@@ -11,6 +12,15 @@ class DashboardTab extends Component {
     this.getOwnedStocks().then(ownedStocks =>
       this.setState({ ownedStocks: ownedStocks })
     )
+    const uid = firebase.auth().currentUser.uid
+    const userReference = firebase.firestore().collection("users").doc(uid)
+    userReference.get().then(userSnapshot => {
+      this.setState({
+        balance: userSnapshot.get('balance'),
+        firstName: userSnapshot.get('firstName'),
+        lastName: userSnapshot.get('lastName')
+      })
+    })
   }
 
   async getOwnedStocks() {
@@ -22,9 +32,19 @@ class DashboardTab extends Component {
   }
 
   render() {
+    const {firstName, lastName, balance} = this.state
     return (
       <>
-        <h2>dashboard</h2>
+        <div className="row ">
+          <div className="col-4 text-left">
+            <h2>Hello {firstName} {lastName} </h2>
+          </div>
+          <div className="col text-right">
+            <h4><b>balance:</b> ${balance}</h4>
+          </div>
+        </div>
+        <hr />
+        <h4><b>owned stocks</b></h4>
         {this.state.ownedStocks.length > 0 ? this.state.ownedStocks.map(stock => <h5>{stock.name} - {stock.quantity}</h5>) : <h5>come back here after investing</h5>
         }
       </>

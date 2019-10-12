@@ -40,29 +40,33 @@ export default class BuyTab extends Component {
     const { stockName, quantity } = this.state
     fetch(API_URL + 'GLOBAL_QUOTE&symbol=' + stockName + API_KEY)
       .then(result => result.json())
-      .then(result => {
-        const price = result['Global Quote']['05. price']
-        const db = firebase.firestore();
-        const uid = firebase.auth().currentUser.uid
-        const transaction = new TransactionModel(uid, stockName, quantity, -1 * price)
-        const stock = new StockModel(stockName, quantity)
-        const userReference = db.collection("users").doc(uid)
+      .then(
+        result => {
+          const price = result['Global Quote']['05. price']
+          const db = firebase.firestore();
+          const uid = firebase.auth().currentUser.uid
+          const transaction = new TransactionModel(uid, stockName, quantity, -1 * price)
+          const stock = new StockModel(stockName, quantity)
+          const userReference = db.collection("users").doc(uid)
 
-        // Update balance
-        userReference.get().then((userSnapshot) => {
-          const priorBalance = userSnapshot.get('balance')
-          userReference.set({ 'balance': parseInt(priorBalance) + parseInt(transaction.amount) })
-        })
-
-        // Record transaction
-        db.collection("transactions").add(Object.assign({}, transaction)).then((transactionReference) => {
-          // Update owned stocks (setting stock details by id)
-          // WRONG: ownedStocks should be by their ticker name (it's a set) will solve duplication
-          userReference.collection('ownedStocks').doc(transactionReference.id).set(Object.assign({}, stock)).then(() => {
-            this.setState({ stockName: '', quantity: '' })
+          // Update balance
+          userReference.get().then((userSnapshot) => {
+            const priorBalance = userSnapshot.get('balance')
+            userReference.set({ 'balance': parseFloat(priorBalance) + parseFloat(transaction.amount) })
           })
-        })
-      })
+
+          // Record transaction
+          db.collection("transactions").add(Object.assign({}, transaction)).then((transactionReference) => {
+            // Update owned stocks (setting stock details by id)
+            // WRONG: ownedStocks should be by their ticker name (it's a set) will solve duplication
+            userReference.collection('ownedStocks').doc(transactionReference.id).set(Object.assign({}, stock)).then(() => {
+              this.setState({ stockName: '', quantity: '' })
+            })
+          })
+        },
+        error => console.log(error)
+      )
+      .catch(error => console.log(error))
   }
 
   onResultClick = symbol => this.setState({ stockName: symbol, searchResults: [] })
@@ -87,8 +91,8 @@ export default class BuyTab extends Component {
     return (
       <>
         {BuyForm}
-        <div className="col-10 mx-auto">
-          <h5>results</h5>
+        <div className="col-10 col-lg-5 mx-auto">
+          <h5 className="pt-5">results</h5>
           <hr />
           {
             this.state.searchResults && this.state.searchResults.length > 0 ?

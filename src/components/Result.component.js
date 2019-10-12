@@ -9,7 +9,7 @@ function ResultComponent(props) {
       onClick={() => props.onClick(symbol)}
       onMouseEnter={toggleHover}
       onMouseLeave={toggleHover}>
-      <div className="col text-left">{symbol}</div>
+      <div className="col-1 text-left">{symbol}</div>
       <div className="col text-right">{name}</div>
     </div>
   );
