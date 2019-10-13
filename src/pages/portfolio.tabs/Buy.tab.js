@@ -3,10 +3,7 @@ import firebase from 'firebase/app'
 import Result from '../../components/Result.component'
 import StockModel from '../../models/Stock.model'
 import TransactionModel from '../../models/Transaction.model'
-import key from '../../config/alphaVantageConfig'
-
-const API_URL = 'https://www.alphavantage.co/query?function='
-const API_KEY = '&apikey=' + key
+import { API_URL, API_KEY } from '../../config/alphaVantageConfig'
 
 export default class BuyTab extends Component {
   state = {
