@@ -26,7 +26,7 @@ export default class BuyTab extends Component {
       )
   }
 
-  onQuantityChange = (e) => this.setState({ quantity: e.target.value })
+  onQuantityChange = (e) => this.setState({ quantity: parseInt(e.target.value) })
 
   inputNotValid = () => {
     // TODO: Validate stockName & quanity more rigorously
@@ -56,11 +56,12 @@ export default class BuyTab extends Component {
 
           // Record transaction
           db.collection("transactions").add(Object.assign({}, transaction)).then((transactionReference) => {
-            // Update owned stocks (setting stock details by id)
-            // WRONG: ownedStocks should be by their ticker name (it's a set) will solve duplication
-            userReference.collection('ownedStocks').doc(transactionReference.id).set(Object.assign({}, stock)).then(() => {
-              this.setState({ stockName: '', quantity: '' })
-            })
+            let stockReference = userReference.collection('ownedStocks').doc(stock.name)
+            // Update ownedStocks
+            stockReference.get().then((doc) => {
+              if (doc.exists) stock.quantity += parseInt(doc.get('quantity'))
+              stockReference.set(Object.assign({}, stock))
+            }).then(() => this.setState({ stockName: '', quantity: '' }))
           })
         },
         error => console.log(error)
